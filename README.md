@@ -8,6 +8,7 @@ This is a simple day project to keep track of scoring during a game of Phase10. 
 - Django Web Framework
 - Python
 - Heroku
+- Bootstrap
 
 ## Usage
 
