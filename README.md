@@ -18,3 +18,5 @@ This is a simple day project to keep track of scoring during a game of Phase10. 
 5. Update score and phase per round. Host will finish the rounds as well as can finish the game.
 
 ## Screenshots
+![](https://github.com/olivaC/phase10-web-scorer/blob/master/docs/Screen%20Shot%202019-06-30%20at%2011.34.52%20AM.png?raw=true)![](https://github.com/olivaC/phase10-web-scorer/blob/master/docs/Screen%20Shot%202019-06-30%20at%2011.35.22%20AM.png?raw=true)![](https://github.com/olivaC/phase10-web-scorer/blob/master/docs/Screen%20Shot%202019-06-30%20at%2011.36.05%20AM.png?raw=true)![](https://github.com/olivaC/phase10-web-scorer/blob/master/docs/Screen%20Shot%202019-06-30%20at%2011.36.36%20AM.png?raw=true)![](https://github.com/olivaC/phase10-web-scorer/blob/master/docs/Screen%20Shot%202019-06-30%20at%2011.36.47%20AM.png?raw=true)
+![](https://github.com/olivaC/phase10-web-scorer/blob/master/docs/Screen%20Shot%202019-06-30%20at%2011.37.00%20AM.png?raw=true)
