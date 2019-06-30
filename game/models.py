@@ -12,7 +12,7 @@ class Game(models.Model):
     players = models.ManyToManyField(User)
     start = models.BooleanField(default=False)
     finish = models.BooleanField(default=False)
-    host = models.OneToOneField(User, related_name='game_user', on_delete=models.CASCADE, blank=True, null=True)
+    host = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="host")
 
     def get_url(self):
         return "/game/{}".format(self.name)
@@ -24,7 +24,7 @@ class Game(models.Model):
 class Score(models.Model):
     """Score model"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, blank=False)
-    player = models.OneToOneField(User, related_name='user', on_delete=models.CASCADE, blank=True, null=True)
+    player = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE, blank=True, null=True)
     phase = models.IntegerField(default=1)
     score = models.IntegerField(default=0)
     game = models.ForeignKey(Game, on_delete="CASCADE")
