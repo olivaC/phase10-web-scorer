@@ -115,6 +115,7 @@ def new_game(request):
             )
             user = request.user
             game.players.add(user)
+            game.host = user
             game.save()
             Score.objects.create(
                 player=user,
