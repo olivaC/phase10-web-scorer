@@ -37,7 +37,13 @@
                         </button>
                     </div>
                 </form>
+            {% else %}
+                <a class="btn btn-success btn-user btn-block" href="{{ game.get_url }}" role="button"
+                   style="float: bottom">
+                    Refresh
+                </a>
             {% endif %}
+
 
             {% if request.user == game.host %}
                 <form method='GET' action='/start-game/' class="form-inline mr-auto w-100 navbar-search">
@@ -51,9 +57,7 @@
                 </form>
             {% endif %}
 
-            <a class="btn btn-success btn-user btn-block" href="{{ game.get_url }}" role="button" style="float: bottom">
-                Refresh
-            </a>
+
             </div>
         {% elif game.finish %}
             <div class="alert alert-danger" role="alert">
