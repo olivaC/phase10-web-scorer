@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load tz %}
+
+
+{% block page_title %}
+    Phase10Scorer | New Game
+{% endblock %}
+
+{% block content %}
+
+    <h2>
+        <center>Create New Game</center>
+    </h2>
+
+    <form action="" method="post" class="user">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="text" class="form-control form-control-user"
+                   id="name" name="name"
+                   placeholder="Enter game name...">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary btn-user btn-block" type="submit">
+                Create New Game
+            </button>
+        </div>
+        {% if form.errors %}
+            <div class="errorlist">
+                <ul>
+                    <li>
+                        Sorry, the username could not be found.
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+        {% if messages %}
+            <ul class="errorlist">
+                {% for message in messages %}
+                    <li{% if message.tags %}
+                        class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </form>
+
+{% endblock %}

@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django import forms
 
+from game.models import Game
 from phase10Scorer.settings import PASSWORD
 
 
@@ -39,5 +40,22 @@ class UserCreateForm(forms.Form):
         try:
             User.objects.get(username__iexact=self.cleaned_data['username'])
             raise forms.ValidationError('Username already exists.')
+        except:
+            return self.cleaned_data
+
+
+class NewGameForm(forms.Form):
+    """
+    Form for a new game
+    """
+    name = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=128)), label="Unique Game Name")
+
+    class Meta:
+        fields = ['name', ]
+
+    def clean(self):
+        try:
+            Game.objects.get(name__iexact=self.cleaned_data['name'])
+            raise forms.ValidationError("Game name already taken.")
         except:
             return self.cleaned_data

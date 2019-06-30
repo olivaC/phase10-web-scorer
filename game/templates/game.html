@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% load tz %}
+
+
+{% block page_title %}
+    Phase10Scorer | Game
+{% endblock %}
+
+{% block content %}
+    <div style="padding-bottom: 15px">
+
+        {% if not game.start %}
+            <h2>
+                <center>{{ game.name }}</center>
+            </h2>
+            <div class="alert alert-danger" role="alert">
+                <center>Game has not started yet</center>
+            </div>
+
+            <div class="alert alert-primary" role="alert">
+                <center>Players in this game: {% for player in players %}{{ player.username }}, {% endfor %}</center>
+            </div>
+
+            {% if request.user not in players %}
+                <form method='GET' action='/join-game/' class="form-inline mr-auto w-100 navbar-search">
+                    <div class="input-group">
+                        <input type="hidden" class="form-control bg-light border-0 small" value="{{ game.id }}"
+                               aria-label="Search" aria-describedby="basic-addon2" name="q">
+                        <button class="btn btn-info btn-user btn-block" type="submit">
+                            Join Game
+                        </button>
+                    </div>
+                </form>
+            {% endif %}
+
+            {% if request.user == game.host %}
+                <form method='GET' action='/start-game/' class="form-inline mr-auto w-100 navbar-search">
+                    <div class="input-group">
+                        <input type="hidden" class="form-control bg-light border-0 small" value="{{ game.id }}"
+                               aria-label="Search" aria-describedby="basic-addon2" name="q">
+                        <button class="btn btn-danger btn-user btn-block" type="submit">
+                            Start Game
+                        </button>
+                    </div>
+                </form>
+            {% endif %}
+        {% elif game.finish %}
+            <div class="alert alert-danger" role="alert">
+                <center>Game completed</center>
+            </div>
+            <h2>
+                <center>{{ player.username }}</center>
+            </h2>
+            <h3>
+                <center>Round: {{ game.round }}</center>
+            </h3>
+            <hr>
+            <div class="alert alert-primary" role="alert">
+                <center>Score: {{ score.score }} | Phase: {{ score.phase }}<br></center>
+            </div>
+
+            <h3>
+                <center>Leaderboard</center>
+            </h3>
+
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Player</th>
+                    <th scope="col">Phase</th>
+                    <th scope="col">Score</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for s in scores %}
+                    {% if player.username == s.player.username %}
+                        <tr class="table-success">
+                            <td>{{ s.player.username }}</td>
+                            <td>{{ s.phase }}</td>
+                            <td>{{ s.score }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>{{ s.player.username }}</td>
+                            <td>{{ s.phase }}</td>
+                            <td>{{ s.score }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+
+        {% else %}
+            <h2>
+                <center>{{ player.username }}</center>
+            </h2>
+            <h3>
+                <center>Round: {{ game.round }}</center>
+            </h3>
+            <hr>
+            <div class="alert alert-primary" role="alert">
+                <center>Score: {{ score.score }} | Phase: {{ score.phase }}<br></center>
+            </div>
+            <a class="btn btn-primary btn-user btn-block" href="#" role="button" data-toggle="modal"
+               data-target="#scoreModal"> Update Score & Phase
+            </a>
+            {% if request.user == game.host %}
+                <hr>
+                <form method='GET' action='/update-round/' class="form-inline mr-auto w-100 navbar-search">
+                    <div class="input-group">
+                        <input type="hidden" class="form-control bg-light border-0 small" value="{{ game.id }}"
+                               aria-label="Search" aria-describedby="basic-addon2" name="q">
+                        <button class="btn btn-warning btn-user btn-block" type="submit">
+                            Finish Round {{ game.round }}
+                        </button>
+                    </div>
+                </form>
+                <hr>
+                <form method='GET' action='/finish-game/' class="form-inline mr-auto w-100 navbar-search">
+                    <div class="input-group">
+                        <input type="hidden" class="form-control bg-light border-0 small" value="{{ game.id }}"
+                               aria-label="Search" aria-describedby="basic-addon2" name="q">
+                        <button class="btn btn-danger btn-user btn-block" type="submit">
+                            Finish Game
+                        </button>
+                    </div>
+                </form>
+            {% endif %}
+            <hr>
+
+            <h3>
+                <center>Leaderboard</center>
+            </h3>
+
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Player</th>
+                    <th scope="col">Phase</th>
+                    <th scope="col">Score</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for s in scores %}
+                    {% if player.username == s.player.username %}
+                        <tr class="table-success">
+                            <td>{{ s.player.username }}</td>
+                            <td>{{ s.phase }}</td>
+                            <td>{{ s.score }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>{{ s.player.username }}</td>
+                            <td>{{ s.phase }}</td>
+                            <td>{{ s.score }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+
+        {% endif %}
+
+        <a class="btn btn-success btn-user btn-block" href="{{ game.get_url }}" role="button" style="float: bottom">
+            Refresh Scores
+        </a>
+    </div>
+
+    <!-- Score Modal-->
+    <div class="modal fade" id="scoreModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method='GET' action='/update-score/'>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Submit Score</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="number" class="form-control form-control-user"
+                                   id="id_score" name="score"
+                                   placeholder="Enter score">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" class="form-control form-control-user"
+                                   id="id_phase" name="phase"
+                                   placeholder="Enter phase">
+                        </div>
+                        <input type="hidden" class="form-control bg-light border-0 small" value="{{ game.id }}"
+                               aria-label="Search" aria-describedby="basic-addon2" name="q">
+                        <input type="hidden" class="form-control bg-light border-0 small" value="{{ player.id }}"
+                               aria-label="Search" aria-describedby="basic-addon2" name="p">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary btn-user btn-block" type="submit">
+                            Enter Score & Phase
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

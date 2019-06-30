@@ -8,14 +8,24 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse
 
-from game.forms import LoginForm, UserCreateForm
+from game.forms import LoginForm, UserCreateForm, NewGameForm
+from game.models import Game, Score
 from game.utils import unquote_redirect_url
 from phase10Scorer.settings import PASSWORD
 
 
 @login_required
 def index(request):
-    return render(request, 'index.html')
+    context = dict()
+    games = Game.objects.all().filter(finish=False)
+    game_list = []
+    if games:
+        for game in games:
+            if game.players.filter(pk=request.user.pk).exists():
+                game_list.append(game)
+
+    context['games'] = game_list
+    return render(request, 'index.html', context)
 
 
 def login_view(request):
@@ -92,3 +102,124 @@ def logout_view(request):
     """
     logout(request)
     return HttpResponseRedirect(request.GET.get(next, reverse("game:index")))
+
+
+@login_required
+def new_game(request):
+    context = dict()
+    if request.method == 'POST':
+        form = NewGameForm(request.POST)
+        if form.is_valid():
+            game = Game.objects.create(
+                name=form.cleaned_data['name'].strip()
+            )
+            user = request.user
+            game.players.add(user)
+            game.save()
+            Score.objects.create(
+                player=user,
+                game=game
+            )
+            return HttpResponseRedirect(game.get_url())
+
+    form = NewGameForm()
+    context['form'] = form
+    return render(request, 'new_game.html', context)
+
+
+@login_required
+def game(request, name):
+    game = Game.objects.get(name__exact=name)
+    user = request.user
+
+    try:
+        player = game.players.all().get(username=user.username)
+        score = Score.objects.get(player=user, game=game)
+        scores = Score.objects.all().filter(game=game).order_by('phase')
+    except:
+        score = None
+        print("No score for this player")
+
+    players = game.players.all()
+
+    return render(request, 'game.html', locals())
+
+
+@login_required
+def search_view(request):
+    context = dict()
+    query = request.GET.get("q")
+
+    if query:
+        queryset = Game.objects.all().filter(finish=False, name__icontains=query)
+    else:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    context['games'] = queryset
+
+    return render(request, 'search_games.html', context)
+
+
+@login_required
+def join_game(request):
+    query = request.GET.get("q")
+    game = Game.objects.get(id=query)
+    user = request.user
+    game.players.add(user)
+    game.save()
+    Score.objects.create(
+        player=user,
+        game=game
+    )
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def start_game(request):
+    query = request.GET.get("q")
+    game = Game.objects.get(id=query)
+    if game:
+        game.start = True
+        game.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def update_score(request):
+    score = request.GET.get("score")
+    phase = request.GET.get("phase")
+    query = request.GET.get("q")
+    player = request.GET.get("p")
+
+    game = Game.objects.get(id=query)
+
+    if game.finish:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    s = Score.objects.get(game=game, player_id=player)
+    s.score = int(score)
+    s.phase = int(phase)
+    s.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def update_round(request):
+    query = request.GET.get("q")
+    game = Game.objects.get(id=query)
+    if game.finish:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    if game:
+        game.round += 1
+        game.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def finish_game(request):
+    query = request.GET.get("q")
+    game = Game.objects.get(id=query)
+    if game:
+        game.finish = True
+        game.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

@@ -3,21 +3,15 @@
 
 
 {% block page_title %}
-    Phase10Scorer | Dashboard
+    Phase10Scorer | Search
 {% endblock %}
 
 {% block content %}
 
     <h2>
-        <center>Welcome {{ request.user.username }}</center>
+        <center>Search results</center>
     </h2>
-    <a class="btn btn-danger btn-user btn-block" href="{% url 'game:new_game' %}" role="button">Start New Game</a>
 
-    <hr>
-
-    <h3>
-        <center>Current Games</center>
-    </h3>
     {% if games %}
         {% for game in games %}
             <div class="card shadow mb-4">
@@ -30,23 +24,21 @@
                 <div class="collapse show" id="collapseCardExample{{ game.id }}">
                     <div class="card-body">
                         <p class="mb-0 small text-gray">Players:
-                            {% for j in game.players.all %}{{ j.username }}{% endfor %}</p>
+                            {% for j in game.players.all %}{{ j.username }}, {% endfor %}</p>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <a href="{{ game.get_url }}"
-                       class="btn btn-primary btn-user btn-block">Go To Game</a>
-
-                </div>
+                {% if request.user in game.players.all or game.start == False %}
+                    <div class="card-footer">
+                        <a href="{{ game.get_url }}"
+                           class="btn btn-primary btn-user btn-block">Go To Game</a>
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
     {% else %}
         <div class="alert alert-danger" role="alert">
-            <center>No Active Games</center>
+            <center>No matches found</center>
         </div>
     {% endif %}
-
-
-
 
 {% endblock %}
