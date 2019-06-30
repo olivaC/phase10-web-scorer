@@ -18,7 +18,7 @@ class Game(models.Model):
         return "/game/{}".format(self.name)
 
     def __str__(self):
-        return "Game: {} | Host: {}".format(self.name, self.host.username)
+        return "Game: {}".format(self.name)
 
 
 class Score(models.Model):
