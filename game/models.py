@@ -27,7 +27,7 @@ class Score(models.Model):
     player = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE, blank=True, null=True)
     phase = models.IntegerField(default=1)
     score = models.IntegerField(default=0)
-    game = models.ForeignKey(Game, on_delete="CASCADE")
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
 
     @property
     def phase_score(self):
