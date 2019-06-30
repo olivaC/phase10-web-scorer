@@ -3,11 +3,17 @@
 
 
 {% block page_title %}
-    Phase10Scorer | Game
+    Phase10Scorer | {{ game.name }}
 {% endblock %}
 
 {% block content %}
     <div style="padding-bottom: 15px">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'game:index' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ game.name }}</li>
+            </ol>
+        </nav>
 
         {% if not game.start %}
             <h2>
@@ -44,6 +50,11 @@
                     </div>
                 </form>
             {% endif %}
+
+            <a class="btn btn-success btn-user btn-block" href="{{ game.get_url }}" role="button" style="float: bottom">
+                Refresh
+            </a>
+            </div>
         {% elif game.finish %}
             <div class="alert alert-danger" role="alert">
                 <center>Game completed</center>
@@ -159,12 +170,13 @@
                 </tbody>
             </table>
 
+            <a class="btn btn-success btn-user btn-block" href="{{ game.get_url }}" role="button" style="float: bottom">
+                Refresh Scores
+            </a>
+            </div>
+
         {% endif %}
 
-        <a class="btn btn-success btn-user btn-block" href="{{ game.get_url }}" role="button" style="float: bottom">
-            Refresh Scores
-        </a>
-    </div>
 
     <!-- Score Modal-->
     <div class="modal fade" id="scoreModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -179,24 +191,52 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        <div class="alert alert-warning" role="alert">
+                            <center>
+                                5 points (1-9)<br>
+                                10 points (10-12)<br>
+                                15 points (Miss a turn)<br>
+                                25 points (Wildcard *)
+                            </center>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="addsub" id="inlineRadio1"
+                                   value="add" checked>
+                            <label class="form-check-label" for="inlineRadio1">Add</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="addsub" id="inlineRadio2"
+                                   value="subtract">
+                            <label class="form-check-label" for="inlineRadio2">Subtract</label>
+                        </div>
                         <div class="form-group">
                             <input type="number" class="form-control form-control-user"
                                    id="id_score" name="score"
-                                   placeholder="Enter score" pattern="\d*">
+                                   placeholder="Enter score for round {{ game.round }}" pattern="\d*">
                         </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control form-control-user"
-                                   id="id_phase" name="phase"
-                                   placeholder="Enter phase" pattern="\d*">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="phase" id="defaultCheck1"
+                                   name="phase">
+                            <label class="form-check-label" for="defaultCheck1">
+                                Check if Phase {{ score.phase }} completed this round
+                            </label>
                         </div>
+                        <hr>
                         <input type="hidden" class="form-control bg-light border-0 small" value="{{ game.id }}"
                                aria-label="Search" aria-describedby="basic-addon2" name="q">
                         <input type="hidden" class="form-control bg-light border-0 small" value="{{ player.id }}"
                                aria-label="Search" aria-describedby="basic-addon2" name="p">
+                        <div class="alert alert-primary" role="alert">
+                            <center>
+                                Old Score: {{ score.score }}<br>
+                                Old Phase: {{ score.phase }}</center>
+                        </div>
+
+
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary btn-user btn-block" type="submit">
-                            Enter Score & Phase
+                            Update Score & Phase
                         </button>
                     </div>
                 </form>

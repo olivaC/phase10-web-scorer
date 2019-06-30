@@ -149,7 +149,7 @@ def game(request, name):
 @login_required
 def search_view(request):
     context = dict()
-    query = request.GET.get("q")
+    query = request.GET.get("q").strip()
 
     if query:
         queryset = Game.objects.all().filter(finish=False, name__icontains=query)
@@ -187,6 +187,7 @@ def start_game(request):
 
 @login_required
 def update_score(request):
+    addsub = request.GET.get("addsub")
     score = request.GET.get("score")
     phase = request.GET.get("phase")
     query = request.GET.get("q")
@@ -198,8 +199,12 @@ def update_score(request):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     s = Score.objects.get(game=game, player_id=player)
-    s.score += int(score)
-    s.phase = int(phase)
+    if addsub == "add":
+        s.score += int(score)
+    else:
+        s.score -= int(score)
+    if phase:
+        s.phase += 1
     s.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -224,3 +229,9 @@ def finish_game(request):
         game.finish = True
         game.save()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def go_back(request):
+    x = 'yar'
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
