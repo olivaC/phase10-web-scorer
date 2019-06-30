@@ -30,7 +30,7 @@
                 <div class="collapse show" id="collapseCardExample{{ game.id }}">
                     <div class="card-body">
                         <p class="mb-0 small text-gray">Players:
-                            {% for j in game.players.all %}{{ j.username }}{% endfor %}</p>
+                            {% for j in game.players.all %}{{ j.username }}, {% endfor %}</p>
                     </div>
                 </div>
                 <div class="card-footer">

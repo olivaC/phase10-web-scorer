@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="692bc967-1205-469f-b862-2830a7ab4bb3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/game/templates/game.html" beforeDir="false" afterPath="$PROJECT_DIR$/game/templates/game.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/game/templates/index.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -81,13 +81,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Procfile" value="13" />
-          <entry key="html" value="2837" />
+          <entry key="html" value="2839" />
           <entry key="py" value="4944" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="2837" />
+          <entry key="HTML" value="2839" />
           <entry key="PLAIN_TEXT" value="13" />
           <entry key="Python" value="4944" />
         </counts>
@@ -98,11 +98,11 @@
     <splitter split-orientation="horizontal" split-proportion="0.72525847">
       <split-first>
         <leaf>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/game/templates/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="540">
-                  <caret line="40" column="18" lean-forward="true" selection-start-line="22" selection-start-column="12" selection-end-line="40" selection-end-column="18" />
+                <state relative-caret-position="450">
+                  <caret line="34" column="22" lean-forward="true" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
                 </state>
               </provider>
             </entry>
@@ -151,7 +151,7 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/game/templates/game.html">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="562">
@@ -297,7 +297,6 @@
         <option value="$PROJECT_DIR$/game/forms.py" />
         <option value="$PROJECT_DIR$/game/templates/new_game.html" />
         <option value="$PROJECT_DIR$/game/admin.py" />
-        <option value="$PROJECT_DIR$/game/templates/index.html" />
         <option value="$PROJECT_DIR$/game/templates/search_games.html" />
         <option value="$PROJECT_DIR$/game/templates/base.html" />
         <option value="$PROJECT_DIR$/game/templates/footer.html" />
@@ -307,6 +306,7 @@
         <option value="$PROJECT_DIR$/game/urls.py" />
         <option value="$PROJECT_DIR$/game/views.py" />
         <option value="$PROJECT_DIR$/game/templates/game.html" />
+        <option value="$PROJECT_DIR$/game/templates/index.html" />
       </list>
     </option>
   </component>
@@ -442,7 +442,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16109046" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16109046" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" />
@@ -453,7 +453,7 @@
       <window_info anchor="bottom" id="Database Console" weight="0.32894737" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.076754384" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.076754384" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.2642544" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -612,13 +612,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game/templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="40" column="18" lean-forward="true" selection-start-line="22" selection-start-column="12" selection-end-line="40" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/game/templates/search_games.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
@@ -739,6 +732,13 @@
             <element signature="n#style#0;n#a#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#1;n#div#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="34" column="22" lean-forward="true" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
         </state>
       </provider>
     </entry>
