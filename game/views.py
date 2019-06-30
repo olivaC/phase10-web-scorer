@@ -199,7 +199,7 @@ def update_score(request):
 
     s = Score.objects.get(game=game, player_id=player)
     s.score += int(score)
-    s.phase += int(phase)
+    s.phase = int(phase)
     s.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
