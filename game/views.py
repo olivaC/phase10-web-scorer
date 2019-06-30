@@ -136,7 +136,7 @@ def game(request, name):
     try:
         player = game.players.all().get(username=user.username)
         score = Score.objects.get(player=user, game=game)
-        scores = Score.objects.all().filter(game=game).order_by('phase')
+        scores = Score.objects.all().filter(game=game).order_by('-phase')
     except:
         score = None
         print("No score for this player")
