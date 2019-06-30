@@ -33,5 +33,28 @@ class Score(models.Model):
     def phase_score(self):
         return "Phase {} - Score {}".format(self.phase, self.score)
 
+    @property
+    def phase_help(self):
+        if self.phase == 1:
+            return "1. 🇦🇦🇦 + 🇧 🇧 🇧"
+        elif self.phase == 2:
+            return "2. 🇦🇦🇦 + 🇦 🇧 🇨 🇩"
+        elif self.phase == 3:
+            return "3. 🇦🇦🇦🇦 + 🇦 🇧 🇨 🇩"
+        elif self.phase == 4:
+            return "4. 🇦 🇧 🇨 🇩 🇪 🇫 🇬 (7)"
+        elif self.phase == 5:
+            return "5. 🇦 🇧 🇨 🇩 🇪 🇫 🇬 🇭 (8)"
+        elif self.phase == 6:
+            return "6. 🇦 🇧 🇨 🇩 🇪 🇫 🇬 🇭 🇮 (9)"
+        elif self.phase == 7:
+            return "7. 🇦🇦🇦🇦 + 🇧 🇧 🇧 🇧"
+        elif self.phase == 8:
+            return "8. 💟💟💟💟💟💟💟 (7)"
+        elif self.phase == 9:
+            return "9. 🇦🇦🇦🇦🇦 + 🇧 🇧"
+        else:
+            return "10. 🇦🇦🇦🇦🇦 + 🇧 🇧 🇧"
+
     def __str__(self):
         return "{} {} {}".format(self.player.username, self.phase, self.score)
