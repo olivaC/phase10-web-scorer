@@ -129,8 +129,8 @@ def new_game(request):
 
 
 @login_required
-def game(request, name):
-    game = Game.objects.get(name__exact=name)
+def game(request, id):
+    game = Game.objects.get(id__exact=id)
     user = request.user
 
     try:

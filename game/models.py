@@ -15,7 +15,7 @@ class Game(models.Model):
     host = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="host")
 
     def get_url(self):
-        return "/game/{}".format(self.name)
+        return "/game/{}".format(self.id)
 
     def __str__(self):
         return "Game: {}".format(self.name)
