@@ -1,0 +1,44 @@
+{% extends 'desktop/base.html' %}
+{% load tz %}
+
+
+{% block page_title %}
+    Phase10Scorer | Search
+{% endblock %}
+
+{% block content %}
+
+    <h2>
+        <center>Search results</center>
+    </h2>
+
+    {% if games %}
+        {% for game in games %}
+            <div class="card shadow mb-4">
+                <!-- Card Header - Accordion -->
+                <div class="d-block card-header py-3">
+                    <div class="inline-group">
+                        {{ game.name }}
+                    </div>
+                </div>
+                <div class="collapse show" id="collapseCardExample{{ game.id }}">
+                    <div class="card-body">
+                        <p class="mb-0 small text-gray">Players:
+                            {% for j in game.players.all %}{{ j.username }}, {% endfor %}</p>
+                    </div>
+                </div>
+                {% if request.user in game.players.all or game.start == False %}
+                    <div class="card-footer">
+                        <a href="{{ game.get_url }}"
+                           class="btn btn-primary btn-user btn-block">Go To Game</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+            <center>No matches found</center>
+        </div>
+    {% endif %}
+
+{% endblock %}

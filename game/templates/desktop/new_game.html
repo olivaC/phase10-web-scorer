@@ -1,0 +1,65 @@
+{% extends 'desktop/base.html' %}
+{% load tz %}
+
+
+{% block page_title %}
+    Phase10Scorer | New Game
+{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'game:index' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create New Game</li>
+        </ol>
+    </nav>
+    <center>
+        <h2>
+            Create New Game
+        </h2><br>
+
+        <div class="card text-center w-75">
+            <form action="" method="post" class="user">
+
+                <div class="card-header">
+                    New Game
+                </div>
+                <div class="card-body">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-user"
+                               id="name" name="name"
+                               placeholder="Enter game name...">
+                    </div>
+
+                    {% if form.errors %}
+                        <div class="errorlist">
+                            <ul>
+                                <li>
+                                    Sorry, the username could not be found.
+                                </li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                    {% if messages %}
+                        <ul class="errorlist">
+                            {% for message in messages %}
+                                <li{% if message.tags %}
+                                    class="{{ message.tags }}"{% endif %}style="font-size: medium">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                <div class="card-footer text-muted">
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-user" type="submit">
+                            Create New Game
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </center>
+{% endblock %}

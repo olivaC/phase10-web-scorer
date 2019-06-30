@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'mobile/base.html' %}
 {% load tz %}
 
 
@@ -7,6 +7,12 @@
 {% endblock %}
 
 {% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'game:index' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create New Game</li>
+        </ol>
+    </nav>
 
     <h2>
         <center>Create New Game</center>
@@ -24,20 +30,11 @@
                 Create New Game
             </button>
         </div>
-        {% if form.errors %}
-            <div class="errorlist">
-                <ul>
-                    <li>
-                        Sorry, the username could not be found.
-                    </li>
-                </ul>
-            </div>
-        {% endif %}
         {% if messages %}
             <ul class="errorlist">
                 {% for message in messages %}
                     <li{% if message.tags %}
-                        class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        class="{{ message.tags }}"{% endif %} style="font-size: medium"><p>{{ message }}</p></li>
                 {% endfor %}
             </ul>
         {% endif %}

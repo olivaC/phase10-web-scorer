@@ -55,7 +55,8 @@ class NewGameForm(forms.Form):
 
     def clean(self):
         try:
-            Game.objects.get(name__iexact=self.cleaned_data['name'])
-            raise forms.ValidationError("Game name already taken.")
+            game = Game.objects.get(name__iexact=self.cleaned_data['name'])
+            if game:
+                raise forms.ValidationError("Game name already taken.")
         except:
             return self.cleaned_data

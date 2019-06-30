@@ -1,17 +1,23 @@
-{% extends 'base.html' %}
+{% extends 'mobile/base.html' %}
 {% load tz %}
 
 
 {% block page_title %}
-    Phase10Scorer | Search
+    Phase10Scorer | Dashboard
 {% endblock %}
 
 {% block content %}
 
     <h2>
-        <center>Search results</center>
+        <center>Welcome {{ request.user.username }}</center>
     </h2>
+    <a class="btn btn-danger btn-user btn-block" href="{% url 'game:new_game' %}" role="button">Start New Game</a>
 
+    <hr>
+
+    <h3>
+        <center>Current Games</center>
+    </h3>
     {% if games %}
         {% for game in games %}
             <div class="card shadow mb-4">
@@ -27,18 +33,20 @@
                             {% for j in game.players.all %}{{ j.username }}, {% endfor %}</p>
                     </div>
                 </div>
-                {% if request.user in game.players.all or game.start == False %}
-                    <div class="card-footer">
-                        <a href="{{ game.get_url }}"
-                           class="btn btn-primary btn-user btn-block">Go To Game</a>
-                    </div>
-                {% endif %}
+                <div class="card-footer">
+                    <a href="{{ game.get_url }}"
+                       class="btn btn-primary btn-user btn-block">Go To Game</a>
+
+                </div>
             </div>
         {% endfor %}
     {% else %}
         <div class="alert alert-danger" role="alert">
-            <center>No matches found</center>
+            <center>No Active Games</center>
         </div>
     {% endif %}
+
+
+
 
 {% endblock %}

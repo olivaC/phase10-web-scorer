@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.contrib import messages
 
 # Create your views here.
 from django.urls import reverse
@@ -12,6 +13,37 @@ from game.forms import LoginForm, UserCreateForm, NewGameForm
 from game.models import Game, Score
 from game.utils import unquote_redirect_url
 from phase10Scorer.settings import PASSWORD
+
+# list of mobile User Agents
+mobile_uas = [
+    'w3c ', 'acs-', 'alav', 'alca', 'amoi', 'audi', 'avan', 'benq', 'bird', 'blac',
+    'blaz', 'brew', 'cell', 'cldc', 'cmd-', 'dang', 'doco', 'eric', 'hipt', 'inno',
+    'ipaq', 'java', 'jigs', 'kddi', 'keji', 'leno', 'lg-c', 'lg-d', 'lg-g', 'lge-',
+    'maui', 'maxo', 'midp', 'mits', 'mmef', 'mobi', 'mot-', 'moto', 'mwbp', 'nec-',
+    'newt', 'noki', 'oper', 'palm', 'pana', 'pant', 'phil', 'play', 'port', 'prox',
+    'qwap', 'sage', 'sams', 'sany', 'sch-', 'sec-', 'send', 'seri', 'sgh-', 'shar',
+    'sie-', 'siem', 'smal', 'smar', 'sony', 'sph-', 'symb', 't-mo', 'teli', 'tim-',
+    'tosh', 'tsm-', 'upg1', 'upsi', 'vk-v', 'voda', 'wap-', 'wapa', 'wapi', 'wapp',
+    'wapr', 'webc', 'winw', 'winw', 'xda', 'xda-'
+]
+
+mobile_ua_hints = ['SymbianOS', 'Opera Mini', 'iPhone']
+
+
+def mobileBrowser(request):
+    ''' Super simple device detection, returns True for mobile devices '''
+
+    mobile_browser = False
+    ua = request.META['HTTP_USER_AGENT'].lower()[0:4]
+
+    if (ua in mobile_uas):
+        mobile_browser = True
+    else:
+        for hint in mobile_ua_hints:
+            if request.META['HTTP_USER_AGENT'].find(hint) > 0:
+                mobile_browser = True
+
+    return mobile_browser
 
 
 @login_required
@@ -25,7 +57,10 @@ def index(request):
                 game_list.append(game)
 
     context['games'] = game_list
-    return render(request, 'index.html', context)
+    if mobileBrowser(request):
+        return render(request, 'mobile/index.html', context)
+    else:
+        return render(request, 'desktop/index.html', context)
 
 
 def login_view(request):
@@ -110,6 +145,18 @@ def new_game(request):
     if request.method == 'POST':
         form = NewGameForm(request.POST)
         if form.is_valid():
+            try:
+                game_check = Game.objects.get(name__iexact=form.cleaned_data['name'])
+                if game_check:
+                    messages.error(request,
+                                   'Game name already taken. Try again.')
+                    if mobileBrowser(request):
+                        return render(request, 'mobile/new_game.html', context)
+                    else:
+                        return render(request, 'desktop/new_game.html', context)
+            except:
+                print("All good")
+
             game = Game.objects.create(
                 name=form.cleaned_data['name'].strip()
             )
@@ -125,7 +172,10 @@ def new_game(request):
 
     form = NewGameForm()
     context['form'] = form
-    return render(request, 'new_game.html', context)
+    if mobileBrowser(request):
+        return render(request, 'mobile/new_game.html', context)
+    else:
+        return render(request, 'desktop/new_game.html', context)
 
 
 @login_required
@@ -143,7 +193,10 @@ def game(request, id):
 
     players = game.players.all()
 
-    return render(request, 'game.html', locals())
+    if mobileBrowser(request):
+        return render(request, 'mobile/game.html', locals())
+    else:
+        return render(request, 'desktop/game.html', locals())
 
 
 @login_required
@@ -157,8 +210,10 @@ def search_view(request):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     context['games'] = queryset
-
-    return render(request, 'search_games.html', context)
+    if mobileBrowser(request):
+        return render(request, 'mobile/search_games.html', context)
+    else:
+        return render(request, 'desktop/search_games.html', context)
 
 
 @login_required

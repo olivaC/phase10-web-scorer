@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'desktop/base.html' %}
 {% load tz %}
 
 
@@ -8,15 +8,8 @@
 
 {% block content %}
 
-    <h2>
-        <center>Welcome {{ request.user.username }}</center>
-    </h2>
-    <a class="btn btn-danger btn-user btn-block" href="{% url 'game:new_game' %}" role="button">Start New Game</a>
-
-    <hr>
-
     <h3>
-        <center>Current Games</center>
+        <center>My Current Games</center>
     </h3>
     {% if games %}
         {% for game in games %}

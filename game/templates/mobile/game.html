@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'mobile/base.html' %}
 {% load tz %}
 
 
@@ -124,24 +124,20 @@
             </a>
             {% if request.user == game.host %}
                 <hr>
-                <form method='GET' action='/update-round/' class="form-inline mr-auto w-100 navbar-search">
-                    <div class="input-group">
-                        <input type="hidden" class="form-control bg-light border-0 small" value="{{ game.id }}"
-                               aria-label="Search" aria-describedby="basic-addon2" name="q">
-                        <button class="btn btn-warning btn-user btn-block" type="submit">
-                            Finish Round {{ game.round }}
-                        </button>
-                    </div>
+                <form method='GET' action='/update-round/'>
+                    <input type="hidden" class="form-control bg-light border-0 small" value="{{ game.id }}"
+                           aria-label="Search" aria-describedby="basic-addon2" name="q">
+                    <button class="btn btn-warning btn-user btn-block" type="submit">
+                        Finish Round {{ game.round }}
+                    </button>
                 </form>
                 <hr>
-                <form method='GET' action='/finish-game/' class="form-inline mr-auto w-100 navbar-search">
-                    <div class="input-group">
-                        <input type="hidden" class="form-control bg-light border-0 small" value="{{ game.id }}"
-                               aria-label="Search" aria-describedby="basic-addon2" name="q">
-                        <button class="btn btn-danger btn-user btn-block" type="submit">
-                            Finish Game
-                        </button>
-                    </div>
+                <form method='GET' action='/finish-game/'>
+                    <input type="hidden" class="form-control bg-light border-0 small" value="{{ game.id }}"
+                           aria-label="Search" aria-describedby="basic-addon2" name="q">
+                    <button class="btn btn-danger btn-user btn-block" type="submit">
+                        Finish Game
+                    </button>
                 </form>
             {% endif %}
             <hr>
