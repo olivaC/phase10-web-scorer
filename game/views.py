@@ -182,11 +182,32 @@ def new_game(request):
 def game(request, id):
     game = Game.objects.get(id__exact=id)
     user = request.user
+    score_list = list()
 
     try:
         player = game.players.all().get(username=user.username)
         score = Score.objects.get(player=user, game=game)
         scores = Score.objects.all().filter(game=game).order_by('-phase')
+        players = game.players.all()
+        _index = 0
+
+        for s in scores:
+            if score_list:
+                for l in score_list:
+                    if s.phase < l.phase:
+                        _index = score_list.index(l) + 1
+                    if s.phase == l.phase and s.score >= l.score:
+                        _index = score_list.index(l) + 1
+                    if s.phase == l.phase and s.score <= l.score:
+                        _index = score_list.index(l)
+                score_list.insert(_index, s)
+            else:
+                score_list.append(s)
+            if s not in score_list:
+                score_list.append(s)
+
+        scores = score_list
+        players = game.players.all()
     except:
         score = None
         print("No score for this player")
@@ -279,7 +300,11 @@ def update_round(request):
 @login_required
 def finish_game(request):
     query = request.GET.get("q")
+    winner = request.GET.get("w")
     game = Game.objects.get(id=query)
+    score = Score.objects.get(game=game, player_id=winner)
+    score.winner = True
+    score.save()
     if game:
         game.finish = True
         game.save()

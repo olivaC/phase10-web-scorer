@@ -28,6 +28,7 @@ class Score(models.Model):
     phase = models.IntegerField(default=1)
     score = models.IntegerField(default=0)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    winner = models.BooleanField(default=False)
 
     @property
     def phase_score(self):
@@ -36,11 +37,11 @@ class Score(models.Model):
     @property
     def phase_help(self):
         if self.phase == 1:
-            return "1. 🇦🇦🇦 + 🇧 🇧 🇧"
+            return "1. 🇦 🇦 🇦 + 🇧 🇧 🇧"
         elif self.phase == 2:
-            return "2. 🇦🇦🇦 + 🇦 🇧 🇨 🇩"
+            return "2. 🇦 🇦 🇦 + 🇦 🇧 🇨 🇩"
         elif self.phase == 3:
-            return "3. 🇦🇦🇦🇦 + 🇦 🇧 🇨 🇩"
+            return "3. 🇦 🇦 🇦 🇦 + 🇦 🇧 🇨 🇩"
         elif self.phase == 4:
             return "4. 🇦 🇧 🇨 🇩 🇪 🇫 🇬 (7)"
         elif self.phase == 5:
@@ -48,13 +49,13 @@ class Score(models.Model):
         elif self.phase == 6:
             return "6. 🇦 🇧 🇨 🇩 🇪 🇫 🇬 🇭 🇮 (9)"
         elif self.phase == 7:
-            return "7. 🇦🇦🇦🇦 + 🇧 🇧 🇧 🇧"
+            return "7. 🇦 🇦 🇦 🇦 + 🇧 🇧 🇧 🇧"
         elif self.phase == 8:
             return "8. 💟💟💟💟💟💟💟 (7)"
         elif self.phase == 9:
-            return "9. 🇦🇦🇦🇦🇦 + 🇧 🇧"
+            return "9. 🇦 🇦 🇦 🇦 🇦  + 🇧 🇧"
         else:
-            return "10. 🇦🇦🇦🇦🇦 + 🇧 🇧 🇧"
+            return "10. 🇦 🇦 🇦 🇦 🇦 + 🇧 🇧 🇧"
 
     def __str__(self):
         return "{} {} {}".format(self.player.username, self.phase, self.score)

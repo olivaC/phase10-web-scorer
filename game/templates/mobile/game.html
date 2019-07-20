@@ -61,7 +61,8 @@
             </div>
         {% elif game.finish %}
             <div class="alert alert-danger" role="alert">
-                <center>Game completed</center>
+                <center>Game completed - {% if score.winner %}YOU WIN!{% else %}YOU LOSE
+                    WAHWAHWAH{% endif %}</center>
             </div>
             <h2>
                 <center>{{ player.username }}</center>
@@ -132,13 +133,9 @@
                     </button>
                 </form>
                 <hr>
-                <form method='GET' action='/finish-game/'>
-                    <input type="hidden" class="form-control bg-light border-0 small" value="{{ game.id }}"
-                           aria-label="Search" aria-describedby="basic-addon2" name="q">
-                    <button class="btn btn-danger btn-user btn-block" type="submit">
-                        Finish Game
-                    </button>
-                </form>
+                 <a class="btn btn-primary btn-danger btn-block" href="#" role="button" data-toggle="modal"
+                   data-target="#finishModal"> Finish Game
+                </a>
             {% endif %}
             <hr>
 
@@ -247,5 +244,39 @@
         </div>
     </div>
 
-{% endblock %}
+    <!-- Finish Modal-->
+    <div class="modal fade" id="finishModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method='GET' action='/finish-game/'>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Finish Game</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="winner">Winning Player</label>
+                            <select class="form-control form-control-user" name="w">
+                                {% for p in players %}
+                                    <option value={{ player.id }}>{{ player.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
+                        <input type="hidden" class="form-control bg-light border-0 small" value="{{ game.id }}"
+                               aria-label="Search" aria-describedby="basic-addon2" name="q">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary btn-user btn-block" type="submit">
+                            Finish Game
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
