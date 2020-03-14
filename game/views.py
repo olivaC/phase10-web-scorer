@@ -1,3 +1,5 @@
+import json
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -281,6 +283,13 @@ def update_score(request):
         s.score -= int(score)
     if phase:
         s.phase += 1
+
+    if request.user == game.host:
+        if game.finish:
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        if game:
+            game.round += 1
+            game.save()
     s.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -315,3 +324,50 @@ def finish_game(request):
 def go_back(request):
     x = 'yar'
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def ajax_update_leaderboard(request):
+    """
+    Ajax request to update the leaderboard.
+
+    :param request:
+    :return:
+    """
+
+    query = request.GET.get("q")
+    game = Game.objects.get(id=query)
+    score_list = []
+    leader_board = []
+
+    scores = Score.objects.all().filter(game=game).order_by('-phase')
+    _index = 0
+    for s in scores:
+        if score_list:
+            for l in score_list:
+                if s.phase < l.phase:
+                    _index = score_list.index(l) + 1
+                if s.phase == l.phase and s.score >= l.score:
+                    _index = score_list.index(l) + 1
+                if s.phase == l.phase and s.score <= l.score:
+                    _index = score_list.index(l)
+            score_list.insert(_index, s)
+        else:
+            score_list.append(s)
+        if s not in score_list:
+            score_list.append(s)
+
+    for i in score_list:
+        temp = {
+            'player': i.player.username,
+            'player_id': i.player.pk,
+            'phase': i.phase,
+            'score': i.score,
+        }
+        leader_board.append(temp)
+
+    return HttpResponse(json.dumps(leader_board))
+
+
+
+

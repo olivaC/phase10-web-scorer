@@ -18,4 +18,5 @@ urlpatterns = [
     path('update-round/', views.update_round, name="update_round"),
     path('finish-game/', views.finish_game, name="finish_game"),
     path('go-back/', views.go_back, name="go_back"),
+    path('game/ajax-update-leaderboard/', views.ajax_update_leaderboard, name="update_leaderboard")
 ]
